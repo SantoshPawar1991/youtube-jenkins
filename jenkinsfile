@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+    environment {
+        name='santosh'
+    }
+    parameters {
+        string(name: 'santosh', description: 'Working in IT', defaultValue: 'Sandy Pawar')
+        booleanParam(name: 'isMale' , defaultValue: true , description: 'Who you are?')
+    }
+
+    stages {
+        stage('RUN A Command') {
+            steps {
+                sh '''
+                date
+                pwd
+                ls
+                cal 2023
+                '''
+            }
+        }
+         stage('Environment Variables') {
+             environment{
+                 username="mahesh"
+             }
+            steps {
+                sh 'echo "${BUID_ID}"'
+                sh 'echo "${name}"'
+                sh 'echo "${username}"'
+            }
+        }
+         stage('continue ?'){
+            input{
+                message "should we continue ?"
+                ok "yes we should"
+            }
+            steps{
+                 echo "we can deploy"    
+            }
+         }
+         stage('Parameters') {
+             
+            steps {
+                echo 'deployment on test environment'
+                sh 'echo "${username}"'
+                sh 'echo "${santosh}"'
+            }
+        }
+         stage('Pre-prod') {
+            steps {
+                echo 'deployment on pre-prod environment'
+            }
+        }
+         stage('Production') {
+            steps {
+                echo 'deployment on prod environment'
+            }
+        }
+                
+    }
+    post{
+            always{
+                echo "I will always say hello again "
+            }
+            failure{
+                echo "failure"
+            }
+            success{
+                echo "success"
+            }
+            
+        }
+}
